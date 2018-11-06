@@ -38,14 +38,17 @@ def post_list(request):
         tone2 = (json.dumps(tone, indent=2))
         tone3 = json.loads(tone2)
         post.i = len(tone3['document_tone']['tones'])
-        if post.i > 1:
+        if post.i == 1:
+            post.tone_score1 = tone3['document_tone']['tones'][0]['score']
+            post.tone_name1 = tone3['document_tone']['tones'][0]['tone_name']
+        elif post.i > 1:
             post.tone_score1 = tone3['document_tone']['tones'][0]['score']
             post.tone_name1 = tone3['document_tone']['tones'][0]['tone_name']
             post.tone_score2 = tone3['document_tone']['tones'][1]['score']
             post.tone_name2 = tone3['document_tone']['tones'][1]['tone_name']
         else:
-            post.tone_score1 = tone3['document_tone']['tones'][0]['score']
-            post.tone_name1 = tone3['document_tone']['tones'][0]['tone_name']
+            post.tone_score1 = 'null'
+            post.tone_name1 = 'null'
         print("Tone count:  " + str(post.i))
     return render(request, 'blog/post_list.html', {'posts': posts})
 
